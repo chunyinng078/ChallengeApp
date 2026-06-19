@@ -43,8 +43,3 @@ To ensure high availability and scalability, the application is deployed to AWS 
 * Java Development Kit (JDK) 17+
 * Maven (for backend dependencies)
 * AWS Account (for cloud deployment)
-
-### Local Setup
-1. **Clone the repository:**
-```bash
-   git clone [https://github.com/yourusername/challenge-app.git](https://github.com/yourusername/challenge-app.git)
