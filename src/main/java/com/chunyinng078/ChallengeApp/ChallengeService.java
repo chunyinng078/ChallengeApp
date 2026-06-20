@@ -19,9 +19,9 @@ public class ChallengeService {
         return challenges;
     }
 
-    public Challenge getChallenges(String month) {
-        for (Challenge challenge:challenges){
-            if(challenge.getMonth().equals(month)){
+    public Challenge getChallenge(String month) {
+        for (Challenge challenge : challenges) {
+            if (challenge.getMonth() != null && challenge.getMonth().equalsIgnoreCase(month)) {
                 return challenge;
             }
         }
@@ -29,12 +29,23 @@ public class ChallengeService {
     }
 
     public boolean addChallenge(Challenge challenge) {
-        if (challenge != null){
+        if (challenge != null) {
             challenge.setId(nextId++);
             challenges.add(challenge);
             return true;
         }
         return false;
-        
+
+    }
+
+    public boolean updateChallenge(Long id, Challenge updatedChallenge) {
+        for (Challenge challenge : challenges) {
+            if (challenge.getId().equals(id)) {
+                challenge.setMonth(updatedChallenge.getMonth());
+                challenge.setDescription(updatedChallenge.getDescription());
+                return true;
+            }
+        }
+        return false;
     }
 }
