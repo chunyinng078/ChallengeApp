@@ -1,8 +1,11 @@
 package com.chunyinng078.ChallengeApp;
+import java.util.Optional;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public class ChallengeRepository {
+public interface ChallengeRepository extends JpaRepository<Challenge, Long>{
+
+    Optional<Challenge> findByMonthIgnoreCase(String month);
+
     
 }
