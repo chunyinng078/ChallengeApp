@@ -29,7 +29,7 @@ function App() {
   return (
     <>
       <div className="App">
-        <h1>Monthly Challenge</h1>
+        <h1>Monthly Challenges</h1>
         <AddChallenge onChallengeAdded={handleChallengeAdded} />
         <ChallengeList challenges={challenges} />
       </div>
