@@ -9,9 +9,15 @@ public class Challenge {
 
     @Id
     private Long id;
+
     @Column(name= "challengeMonth")
     private String month;
+
     private String description;
+
+    public Challenge() {
+  
+    }
 
     public Challenge(Long id, String month, String description) {
         this.id = id;
