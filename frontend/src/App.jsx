@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react'
-import './App.css'
 import ChallengeList from './component/ChallengeList'
 import axios from 'axios';
 import AddChallenge from './component/AddChallenge';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 
 function App() {
   const [challenges, setChallenges] = useState([]);
@@ -28,11 +32,12 @@ function App() {
 
   return (
     <>
-      <div className="App">
+      <Container className="mt-5">
         <h1>Monthly Challenges</h1>
         <AddChallenge onChallengeAdded={handleChallengeAdded} />
-        <ChallengeList challenges={challenges} />
-      </div>
+        <br/>
+        <ChallengeList challenges={challenges} onDataChange={fetchChallenges}/>
+      </Container>
     </>
   )
 }
