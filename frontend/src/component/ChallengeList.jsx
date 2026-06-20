@@ -12,7 +12,7 @@ function ChallengeList({ challenges, onDataChange }) {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:8080/challenges/${id}`);
+            await axios.delete(`/challenges/${id}`);
             if (onDataChange) onDataChange();
         } catch (error) {
             console.error("Error deleting: ", error);
@@ -27,12 +27,12 @@ function ChallengeList({ challenges, onDataChange }) {
 
     const handleUpdate = async (id) => {
         try {
-            await axios.put(`http://localhost:8080/challenges/${id}`, {
+            await axios.put(`/challenges/${id}`, {
                 month: editMonth,
                 description: editDescription
             });
             setEditingId(null);
-            if (onDataChange) onDataChange(); 
+            if (onDataChange) onDataChange();
         } catch (error) {
             console.error("Error updating: ", error);
         }

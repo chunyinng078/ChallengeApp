@@ -13,7 +13,7 @@ function App() {
 
   const fetchChallenges = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/challenges');
+      const response = await axios.get(`/challenges`);
       setChallenges(response.data);
       console.log(response);
     } catch (error) {

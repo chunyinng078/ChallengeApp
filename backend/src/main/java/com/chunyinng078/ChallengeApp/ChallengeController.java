@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/challenges")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "https://d2pdyfcra4vp4j.cloudfront.net")
 public class ChallengeController {
     private ChallengeService challengeService;
 
