@@ -1,0 +1,119 @@
+provider "aws" {
+  region = "ap-east-1" # 香港區域
+}
+
+# ==========================================
+# 1. 前端 S3 靜態網站儲存桶
+# ==========================================
+resource "aws_s3_bucket" "frontend_bucket" {
+  bucket = "challenge-app-frontend-2026" # 你的 S3 Bucket 名稱
+}
+
+resource "aws_s3_bucket_website_configuration" "frontend_config" {
+  bucket = aws_s3_bucket.frontend_bucket.id
+  index_document { suffix = "index.html" }
+}
+
+# ==========================================
+# 2. 後端 EC2 安全群組與實例
+# ==========================================
+resource "aws_security_group" "backend_sg" {
+  name        = "challenge-app-backend-sg"
+  description = "Allow traffic from CloudFront to Spring Boot"
+
+  # 開放 8080 給後端 API (Spring Boot)
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # 之前排查 504 開放的設定
+  }
+
+  # SSH 連線
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_instance" "backend_ec2" {
+  ami           = "ami-xxxxxx" # 你的 Linux 鏡像 ID
+  instance_type = "t3.micro"
+  security_groups = [aws_security_group.backend_sg.name]
+  key_name      = "your-key-pair"
+
+  tags = { Name = "Challenge-App-Backend" }
+}
+
+# ==========================================
+# 3. 核心大腦：CloudFront 分流器 (Reverse Proxy)
+# ==========================================
+resource "aws_cloudfront_distribution" "cdn" {
+  enabled             = true
+  is_ipv6_enabled     = true
+  default_root_object = "index.html"
+
+  # 【Origin 1】指向 S3 前端
+  origin {
+    domain_name = aws_s3_bucket_website_configuration.frontend_config.website_endpoint
+    origin_id   = "S3-Frontend"
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "http-only" # 解決 504 關鍵：改為 HTTP Only
+      origin_ssl_protocols   = ["TLSv1.2"]
+    }
+  }
+
+  # 【Origin 2】指向 EC2 後端
+  origin {
+    domain_name = aws_instance.backend_ec2.public_dns
+    origin_id   = "EC2-Backend"
+    custom_origin_config {
+      http_port              = 8080          # Spring Boot 端口
+      https_port             = 443
+      origin_protocol_policy = "http-only" # 後端走純 HTTP
+      origin_ssl_protocols   = ["TLSv1.2"]
+    }
+  }
+
+  # 【預設行為】所有流量 (/*) ➔ 去 S3 拿前端網頁
+  default_cache_behavior {
+    target_origin_id       = "S3-Frontend"
+    allowed_methods        = ["GET", "HEAD", "OPTIONS"]
+    cached_methods         = ["GET", "HEAD"]
+    viewer_protocol_policy = "redirect-to-https" # 強制客戶端走 HTTPS
+
+    forwarded_values {
+      query_string = false
+      cookies { forward = "none" }
+    }
+  }
+
+  # 【分流行為】只要是 /challenges* ➔ 轉發給 EC2 後端 API
+  ordered_cache_behavior {
+    path_pattern           = "/challenges*"
+    target_origin_id       = "EC2-Backend"
+    allowed_methods        = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"] # 允許 POST 解決 403
+    cached_methods         = ["GET", "HEAD"]
+    viewer_protocol_policy = "redirect-to-https"
+
+    forwarded_values {
+      query_string = true
+      headers      = ["*"] # 轉發所有 Header（包含 CORS、Origin）
+      cookies { forward = "all" }
+    }
+  }
+
+  restrictions { geo_restriction { restriction_type = "none" } }
+  viewer_certificate { cloudfront_default_certificate = true }
+}
