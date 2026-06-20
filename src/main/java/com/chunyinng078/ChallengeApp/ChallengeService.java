@@ -9,7 +9,7 @@ public class ChallengeService {
 
     private List<Challenge> challenges = new ArrayList<>();
 
-    private Long nextId =0L;
+    private Long nextId = 1L;
 
     public ChallengeService() {
 
