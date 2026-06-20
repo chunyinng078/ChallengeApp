@@ -10,13 +10,13 @@ public class Challenge {
     @Id
     private Long id;
 
-    @Column(name= "challengeMonth")
+    @Column(name = "challengeMonth")
     private String month;
 
     private String description;
 
     public Challenge() {
-  
+
     }
 
     public Challenge(Long id, String month, String description) {
@@ -24,7 +24,7 @@ public class Challenge {
         this.month = month;
         this.description = description;
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -48,6 +48,5 @@ public class Challenge {
     public void setDescription(String description) {
         this.description = description;
     }
-
 
 }

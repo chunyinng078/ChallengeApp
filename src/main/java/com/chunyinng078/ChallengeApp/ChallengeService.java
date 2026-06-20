@@ -2,13 +2,10 @@ package com.chunyinng078.ChallengeApp;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.ArrayList;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ChallengeService {
-
-    // private List<Challenge> challenges = new ArrayList<>();
 
     private Long nextId = 1L;
 
