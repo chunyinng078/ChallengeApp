@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form'; // 🌟 記得 Import Form
+import Form from 'react-bootstrap/Form';
 import axios from 'axios';
+
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 function ChallengeList({ challenges, onDataChange }) {
 
@@ -38,11 +40,13 @@ function ChallengeList({ challenges, onDataChange }) {
         }
     };
 
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const sortedChallenges = [...challenges].sort((a, b) => {
+        return months.indexOf(a.month) - months.indexOf(b.month);
+    });
 
     return (
         <ListGroup as="ol" numbered className="text-start">
-            {challenges.map(challenge => (
+            {sortedChallenges.map(challenge => (
                 <ListGroup.Item key={challenge.id} as="li" className="d-flex justify-content-between align-items-start">
                     {editingId === challenge.id ? (
                         <div className="w-100 me-2">
