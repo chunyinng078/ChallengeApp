@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-function ChallengeList({ challenges, onDataChange }) {
+function ChallengeList({ challenges, onDataChange, onActionSuccess }) {
 
     const [editingId, setEditingId] = useState(null);
     const [editMonth, setEditMonth] = useState('');
@@ -16,8 +16,11 @@ function ChallengeList({ challenges, onDataChange }) {
         try {
             await axios.delete(`http://localhost:8080/challenges/${id}`);
             if (onDataChange) onDataChange();
+            
+            if (onActionSuccess) onActionSuccess("Challenge deleted successfully!", "danger");
         } catch (error) {
             console.error("Error deleting: ", error);
+            if (onActionSuccess) onActionSuccess("Error deleting challenge.", "danger");
         }
     };
 
@@ -35,8 +38,11 @@ function ChallengeList({ challenges, onDataChange }) {
             });
             setEditingId(null);
             if (onDataChange) onDataChange(); 
+            
+            if (onActionSuccess) onActionSuccess("Challenge updated successfully!", "info");
         } catch (error) {
             console.error("Error updating: ", error);
+            if (onActionSuccess) onActionSuccess("Error updating challenge.", "danger");
         }
     };
 
@@ -84,7 +90,6 @@ function ChallengeList({ challenges, onDataChange }) {
                             </div>
                         </>
                     )}
-
                 </ListGroup.Item>
             ))}
         </ListGroup>
