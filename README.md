@@ -2,9 +2,9 @@
 
 <img width="2107" height="1469" alt="image" src="https://github.com/user-attachments/assets/12d85e04-e64a-4feb-a52c-059dc87a53b7" />
 
-The site is live on: https://d2pdyfcra4vp4j.cloudfront.net/
+> A robust, full-stack web application designed with a clean 3-tier architecture, demonstrating seamless integration between a modern frontend, a structured RESTful API, and a relational database, securely deployed on Amazon Web Services (AWS) via a unified CDN reverse proxy.
 
-A robust, full-stack web application designed with a clean 3-tier architecture, demonstrating seamless integration between a modern frontend, a structured RESTful API, and a relational database, securely deployed on Amazon Web Services (AWS) via a unified CDN reverse proxy.
+The site is live on: https://d2pdyfcra4vp4j.cloudfront.net/
 
 ## 🏗️ Architecture Overview
 
