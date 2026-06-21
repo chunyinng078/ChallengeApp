@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form'; // 🌟 記得 Import Form
+import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 
-function ChallengeList({ challenges, onDataChange }) {
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+function ChallengeList({ challenges, onDataChange, onActionSuccess }) {
 
     const [editingId, setEditingId] = useState(null);
     const [editMonth, setEditMonth] = useState('');
@@ -12,10 +14,13 @@ function ChallengeList({ challenges, onDataChange }) {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`/challenges/${id}`);
+            await axios.delete(`http://localhost:8080/challenges/${id}`);
             if (onDataChange) onDataChange();
+            
+            if (onActionSuccess) onActionSuccess("Challenge deleted successfully!", "danger");
         } catch (error) {
             console.error("Error deleting: ", error);
+            if (onActionSuccess) onActionSuccess("Error deleting challenge.", "danger");
         }
     };
 
@@ -27,22 +32,27 @@ function ChallengeList({ challenges, onDataChange }) {
 
     const handleUpdate = async (id) => {
         try {
-            await axios.put(`/challenges/${id}`, {
+            await axios.put(`http://localhost:8080/challenges/${id}`, {
                 month: editMonth,
                 description: editDescription
             });
             setEditingId(null);
-            if (onDataChange) onDataChange();
+            if (onDataChange) onDataChange(); 
+            
+            if (onActionSuccess) onActionSuccess("Challenge updated successfully!", "info");
         } catch (error) {
             console.error("Error updating: ", error);
+            if (onActionSuccess) onActionSuccess("Error updating challenge.", "danger");
         }
     };
 
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const sortedChallenges = [...challenges].sort((a, b) => {
+        return months.indexOf(a.month) - months.indexOf(b.month);
+    });
 
     return (
         <ListGroup as="ol" numbered className="text-start">
-            {challenges.map(challenge => (
+            {sortedChallenges.map(challenge => (
                 <ListGroup.Item key={challenge.id} as="li" className="d-flex justify-content-between align-items-start">
                     {editingId === challenge.id ? (
                         <div className="w-100 me-2">
@@ -80,7 +90,6 @@ function ChallengeList({ challenges, onDataChange }) {
                             </div>
                         </>
                     )}
-
                 </ListGroup.Item>
             ))}
         </ListGroup>
