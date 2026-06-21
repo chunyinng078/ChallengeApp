@@ -6,6 +6,8 @@ A robust, full-stack web application designed with a clean 3-tier architecture, 
 
 ## 🏗️ Architecture Overview
 
+<img width="2411" height="805" alt="image" src="https://github.com/user-attachments/assets/243794ef-e492-4277-bc48-fe427f14fd1c" />
+
 The application is structured to ensure separation of concerns, high security, and maintainability.
 
 ### Local Development Architecture
