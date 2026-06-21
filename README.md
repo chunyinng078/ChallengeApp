@@ -1,5 +1,7 @@
 # Challenge Application: Full-Stack Web App on AWS
 
+The site is live on: https://d2pdyfcra4vp4j.cloudfront.net/(https://d2pdyfcra4vp4j.cloudfront.net/)
+
 A robust, full-stack web application designed with a clean 3-tier architecture, demonstrating seamless integration between a modern frontend, a structured RESTful API, and a relational database, securely deployed on Amazon Web Services (AWS) via a unified CDN reverse proxy.
 
 ## 🏗️ Architecture Overview
