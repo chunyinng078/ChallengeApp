@@ -65,8 +65,6 @@ function AddChallenge({ onChallengeAdded }) {
                     </form>
                 </Card.Body>
             </Card>
-
-
         </>
     )
 }
