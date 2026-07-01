@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class ChallengeService {
 
-    private Long nextId = 1L;
-
     ChallengeRepository challengeRepository;
 
     public ChallengeService(ChallengeRepository challengeRepository) {
@@ -26,12 +24,10 @@ public class ChallengeService {
 
     public boolean addChallenge(Challenge challenge) {
         if (challenge != null) {
-            challenge.setId(nextId++);
             challengeRepository.save(challenge);
             return true;
         }
         return false;
-
     }
 
     public boolean updateChallenge(Long id, Challenge updatedChallenge) {
