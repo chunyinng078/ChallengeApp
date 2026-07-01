@@ -14,7 +14,7 @@ function ChallengeList({ challenges, onDataChange, onActionSuccess }) {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:8080/challenges/${id}`);
+            await axios.delete(`/challenges/${id}`);
             if (onDataChange) onDataChange();
             
             if (onActionSuccess) onActionSuccess("Challenge deleted successfully!", "danger");
@@ -32,7 +32,7 @@ function ChallengeList({ challenges, onDataChange, onActionSuccess }) {
 
     const handleUpdate = async (id) => {
         try {
-            await axios.put(`http://localhost:8080/challenges/${id}`, {
+            await axios.put(`/challenges/${id}`, {
                 month: editMonth,
                 description: editDescription
             });
